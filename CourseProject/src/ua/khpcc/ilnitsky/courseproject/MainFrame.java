@@ -31,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame
      */
     public MainFrame()
     {
+        listTableModel = new ListTableModel(20);
         initComponents();
         
         /*tProdCalcList.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
@@ -75,45 +76,7 @@ public class MainFrame extends javax.swing.JFrame
 
         bCalcAll.setText("Розрахувати разом по галузі");
 
-        ListTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String []
-            {
-                "№", "Заголовок 2", "Заголовок 3", "Заголовок 4", "Заголовок 5"
-            }
-        )
-        {
-            Class[] types = new Class []
-            {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
-            };
-            boolean[] canEdit = new boolean []
-            {
-                false, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex)
-            {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex)
-            {
-                return canEdit [columnIndex];
-            }
-        });
+        ListTable.setModel(listTableModel);
         tableScrollPane.setViewportView(ListTable);
 
         mbFile.setText("Файл");
@@ -185,8 +148,8 @@ public class MainFrame extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bCalcProd)
                     .addComponent(bCalcAll))

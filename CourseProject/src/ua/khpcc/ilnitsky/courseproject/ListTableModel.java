@@ -19,12 +19,13 @@
 package ua.khpcc.ilnitsky.courseproject;
 
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Dmitry Ilnitsky
  */
-public class ListTableModel extends javax.swing.table.DefaultTableModel
+public class ListTableModel extends DefaultTableModel
 {
     private final Class[] types = new Class[]
     {
@@ -41,7 +42,10 @@ public class ListTableModel extends javax.swing.table.DefaultTableModel
 
     ListTableModel(int rowCount)
     {
-
+        super();
+        Vector v = new Vector(rowCount);
+        v.setSize(rowCount);
+        super.setDataVector(v, convertToVector(columnNames));
     }
 
     public Class getColumnClass(int columnIndex)
