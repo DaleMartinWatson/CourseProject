@@ -1,0 +1,4 @@
+CourseProject
+=============
+
+My course project.
