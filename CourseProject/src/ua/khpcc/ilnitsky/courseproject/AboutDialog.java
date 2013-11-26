@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 DaleMartinWatson.
+ * Copyright (C) 2013 Dmitry Ilnitsky.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author DaleMartinWatson
+ * @author Dmitry Ilnitsky
  */
 public class AboutDialog extends javax.swing.JDialog
 {
@@ -83,7 +83,7 @@ public class AboutDialog extends javax.swing.JDialog
     {
 
         bClose = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        textScrollPane = new javax.swing.JScrollPane();
         tpAboutText = new javax.swing.JTextPane();
 
         setTitle("Про програму");
@@ -112,7 +112,7 @@ public class AboutDialog extends javax.swing.JDialog
 
         tpAboutText.setEditable(false);
         tpAboutText.setText("Курсовий проект з предмету \"Системне програмування\"\nТема: \"Відомість розрахунку продуктивності праці\"\nРозробив: студент групи Е-05 Ільницький Дмитро\nПеревірив: викладач Жадченко Ірина Юріївна");
-        jScrollPane1.setViewportView(tpAboutText);
+        textScrollPane.setViewportView(tpAboutText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,14 +124,14 @@ public class AboutDialog extends javax.swing.JDialog
                 .addGap(150, 150, 150))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(textScrollPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addComponent(textScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bClose)
                 .addContainerGap())
@@ -220,7 +220,7 @@ public class AboutDialog extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bClose;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane textScrollPane;
     private javax.swing.JTextPane tpAboutText;
     // End of variables declaration//GEN-END:variables
 

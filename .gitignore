@@ -1,1 +1,9 @@
+*.class
+*.jar
 /Environment
+/CourseProject/test
+/CourseProject/build
+/CourseProject/nbproject
+build.xml
+manifest.mf
+*.log
