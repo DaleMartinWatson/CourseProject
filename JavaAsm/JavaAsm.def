@@ -1,0 +1,4 @@
+LIBRARY JavaAsm
+EXPORTS
+    Java_ua_khpcc_ilnitsky_javaasm_JavaAsm_asmAdd
+    Java_ua_khpcc_ilnitsky_javaasm_JavaAsm_asmDiv
