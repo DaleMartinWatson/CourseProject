@@ -120,29 +120,33 @@ public class MainFrame extends javax.swing.JFrame
         ));
         spCalcAllData.setViewportView(tCalcAllData);
 
-        bMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconMoveUp.png"))); // NOI18N
+        bMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveUp.png"))); // NOI18N
         bMoveUp.setToolTipText("Підняти рядок вище");
 
-        bMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconMoveDown.png"))); // NOI18N
+        bMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveDown.png"))); // NOI18N
         bMoveDown.setToolTipText("Опустити рядок нижче");
 
-        bRemoveRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconRemoveRow.png"))); // NOI18N
+        bRemoveRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconRemoveRow.png"))); // NOI18N
         bRemoveRow.setToolTipText("Видалити рядок");
 
-        bAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconAddRow.png"))); // NOI18N
+        bAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconAddRow.png"))); // NOI18N
         bAddRow.setToolTipText("Додати рядок");
 
         mbFile.setText("Файл");
 
+        fNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         fNew.setText("Створити");
         mbFile.add(fNew);
 
+        fOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         fOpen.setText("Відкрити");
         mbFile.add(fOpen);
 
+        fSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         fSave.setText("Зберегти");
         mbFile.add(fSave);
 
+        fOpenAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         fOpenAs.setText("Зберегти як...");
         mbFile.add(fOpenAs);
 
@@ -150,10 +154,12 @@ public class MainFrame extends javax.swing.JFrame
         mbFile.add(fLatest);
         mbFile.add(fPrintBar);
 
+        fPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         fPrint.setText("Друк");
         mbFile.add(fPrint);
         mbFile.add(fExitBar);
 
+        fExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         fExit.setText("Вихід");
         mbFile.add(fExit);
 
@@ -171,6 +177,7 @@ public class MainFrame extends javax.swing.JFrame
 
         mbHelp.setText("Довідка");
 
+        hAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         hAbout.setText("Про програму");
         hAbout.setToolTipText("");
         hAbout.addActionListener(new java.awt.event.ActionListener()
@@ -229,7 +236,7 @@ public class MainFrame extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bCalcProd)
                     .addComponent(bCalcAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(33, 33, 33))
+                .addContainerGap())
         );
 
         pack();

@@ -26,21 +26,33 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="fNew">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+N"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x421;&#x442;&#x432;&#x43e;&#x440;&#x438;&#x442;&#x438;"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fOpen">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+O"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x412;&#x456;&#x434;&#x43a;&#x440;&#x438;&#x442;&#x438;"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fSave">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x417;&#x431;&#x435;&#x440;&#x435;&#x433;&#x442;&#x438;"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fOpenAs">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+Ctrl+S"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x417;&#x431;&#x435;&#x440;&#x435;&#x433;&#x442;&#x438; &#x44f;&#x43a;..."/>
               </Properties>
             </MenuItem>
@@ -53,6 +65,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fPrint">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+P"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x414;&#x440;&#x443;&#x43a;"/>
               </Properties>
             </MenuItem>
@@ -60,6 +75,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fExit">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+F4"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x412;&#x438;&#x445;&#x456;&#x434;"/>
               </Properties>
             </MenuItem>
@@ -89,6 +107,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="hAbout">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F1"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x41f;&#x440;&#x43e; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x443;"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -176,7 +197,7 @@
                   <Component id="bCalcProd" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bCalcAll" alignment="3" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -247,7 +268,7 @@
     <Component class="javax.swing.JButton" name="bMoveUp">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/iconMoveUp.png"/>
+          <Image iconType="3" name="/res/iconMoveUp.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="&#x41f;&#x456;&#x434;&#x43d;&#x44f;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a; &#x432;&#x438;&#x449;&#x435;"/>
       </Properties>
@@ -255,7 +276,7 @@
     <Component class="javax.swing.JButton" name="bMoveDown">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/iconMoveDown.png"/>
+          <Image iconType="3" name="/res/iconMoveDown.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="&#x41e;&#x43f;&#x443;&#x441;&#x442;&#x438;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a; &#x43d;&#x438;&#x436;&#x447;&#x435;"/>
       </Properties>
@@ -263,7 +284,7 @@
     <Component class="javax.swing.JButton" name="bRemoveRow">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/iconRemoveRow.png"/>
+          <Image iconType="3" name="/res/iconRemoveRow.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="&#x412;&#x438;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a;"/>
       </Properties>
@@ -271,7 +292,7 @@
     <Component class="javax.swing.JButton" name="bAddRow">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/iconAddRow.png"/>
+          <Image iconType="3" name="/res/iconAddRow.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="&#x414;&#x43e;&#x434;&#x430;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a;"/>
       </Properties>
