@@ -29,7 +29,7 @@ public class ListTableModel extends DefaultTableModel
 {
     private final Class[] types = new Class[]
     {
-        java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
+        java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
     };
     private final String[] columnNames = new String[]
     {
@@ -37,15 +37,26 @@ public class ListTableModel extends DefaultTableModel
     };
     boolean[] canEdit = new boolean[]
     {
-        false, true, true, true, true
+        false, true, true, true, false
     };
 
     ListTableModel(int rowCount)
     {
         super();
         Vector v = new Vector(rowCount);
-        v.setSize(rowCount);
+        for(int i = 1; i < (rowCount + 1); i++)
+        {
+            //створення порожніх пронумерованих рядків
+            Vector<Object> oV = new Vector<>(5);
+            oV.addElement(i);
+            v.addElement(oV);
+        }
         super.setDataVector(v, convertToVector(columnNames));
+    }
+    
+    ListTableModel()
+    {
+        this(10);
     }
 
     public Class getColumnClass(int columnIndex)
@@ -56,6 +67,12 @@ public class ListTableModel extends DefaultTableModel
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {
         return canEdit[columnIndex];
+    }
+    
+    @Override
+    public String toString()
+    {
+        return super.toString() + ": " + getDataVector().toString();
     }
 
 }

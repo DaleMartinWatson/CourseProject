@@ -1,10 +1,14 @@
+*.log
 *.class
 *.jar
+*.exp
+*.lib
+*.obj
 /Environment
 /CourseProject/test
 /CourseProject/build
+/CourseProject/dist/
 /CourseProject/nbproject
 build.xml
 manifest.mf
-*.log
-/CourseProject/dist/
+

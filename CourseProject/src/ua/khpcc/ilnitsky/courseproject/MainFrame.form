@@ -31,6 +31,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x421;&#x442;&#x432;&#x43e;&#x440;&#x438;&#x442;&#x438;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fNewActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fOpen">
               <Properties>
@@ -39,6 +42,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x412;&#x456;&#x434;&#x43a;&#x440;&#x438;&#x442;&#x438;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fOpenActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fSave">
               <Properties>
@@ -47,6 +53,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x417;&#x431;&#x435;&#x440;&#x435;&#x433;&#x442;&#x438;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fSaveActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fOpenAs">
               <Properties>
@@ -55,6 +64,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x417;&#x431;&#x435;&#x440;&#x435;&#x433;&#x442;&#x438; &#x44f;&#x43a;..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fOpenAsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fLatest">
               <Properties>
@@ -70,6 +82,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x414;&#x440;&#x443;&#x43a;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fPrintActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="fExitBar">
             </MenuItem>
@@ -80,6 +95,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x412;&#x438;&#x445;&#x456;&#x434;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fExitActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -92,11 +110,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x420;&#x43e;&#x437;&#x440;&#x430;&#x445;&#x443;&#x432;&#x430;&#x442;&#x438; &#x43f;&#x440;&#x43e;&#x434;&#x443;&#x43a;&#x442;&#x438;&#x432;&#x43d;&#x456;&#x441;&#x442;&#x44c;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cCalcProdActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="cCalcAll">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x420;&#x43e;&#x437;&#x440;&#x430;&#x445;&#x443;&#x432;&#x430;&#x442;&#x438; &#x440;&#x430;&#x437;&#x43e;&#x43c; &#x43f;&#x43e; &#x433;&#x430;&#x43b;&#x443;&#x437;&#x456;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cCalcAllActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -162,6 +186,8 @@
                           <Component id="bMoveDown" min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="bAddRow" min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="bRemoveRow" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="bCopy" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="bPaste" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -179,8 +205,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="spProdCalcList" min="-2" pref="182" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="spProdCalcList" min="-2" pref="182" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="spCalcAllData" min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="bCalcProd" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="bCalcAll" alignment="3" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="bMoveUp" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="bMoveDown" min="-2" max="-2" attributes="0"/>
@@ -188,16 +223,14 @@
                       <Component id="bAddRow" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="bRemoveRow" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="bCopy" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="bPaste" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="spCalcAllData" min="-2" pref="22" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="bCalcProd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="bCalcAll" alignment="3" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -295,6 +328,22 @@
           <Image iconType="3" name="/res/iconAddRow.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="&#x414;&#x43e;&#x434;&#x430;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bCopy">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/res/iconCopy.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="&#x412;&#x438;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bPaste">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/res/iconPaste.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="&#x412;&#x438;&#x434;&#x430;&#x43b;&#x438;&#x442;&#x438; &#x440;&#x44f;&#x434;&#x43e;&#x43a;"/>
       </Properties>
     </Component>
   </SubComponents>

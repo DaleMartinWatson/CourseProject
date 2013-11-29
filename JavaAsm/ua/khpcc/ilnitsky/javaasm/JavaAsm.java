@@ -4,8 +4,10 @@ import java.io.Console;
 
 public class JavaAsm
 {
-    native static float asmAdd(float num1, float num2); // dvd - dividend, dvs - divisor
-    native static float asmDiv(float dvd, float dvs); // dvd - dividend, dvs - divisor
+    //JavaAsm.dll test class
+    native public static float asmFAdd(float num1, float num2);
+    native public static float asmFMul(float num1, float num2);
+    native public static float asmFDiv(float dvd, float dvs);// dvd - dividend, dvs - divisor
     
     
     static
@@ -45,17 +47,20 @@ public class JavaAsm
                     console.printf("Exit...");
                     System.exit(0);
                 }
-                
                 x = Float.parseFloat(command[1]);
                 y = Float.parseFloat(command[2]);
                 
-                if(command[0].equalsIgnoreCase("add"))
+                if(command[0].equalsIgnoreCase("fadd"))
                 {
-                    console.printf("Native result: %f; Java result: %f;%n", asmAdd(x, y), (x + y));
+                    console.printf("Native result: %f; Java result: %f;%n", asmFAdd(x, y), (x + y));
                 }
-                else if(command[0].equalsIgnoreCase("div"))
+                if(command[0].equalsIgnoreCase("fmul"))
                 {
-                    console.printf("Native result: %f; Java result: %f;%n", asmDiv(x, y), (x / y));
+                    console.printf("Native result: %f; Java result: %f;%n", asmFMul(x, y), (x * y));
+                }
+                else if(command[0].equalsIgnoreCase("fdiv"))
+                {
+                    console.printf("Native result: %f; Java result: %f;%n", asmFDiv(x, y), (x / y));
                 }
             }
             catch(java.lang.Exception e)

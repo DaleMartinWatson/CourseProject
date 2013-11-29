@@ -18,23 +18,26 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author Dmitry Ilnitsky
  */
 public class MainFrame extends javax.swing.JFrame
 {
-    AboutDialog aboutDialog = new AboutDialog(this, true);
-
-    /**
-     * Creates new form MainFrame
-     */
     public MainFrame()
     {
-        listTableModel = new ListTableModel(20);
-        initComponents();  
+        listTableModel = new ListTableModel(2);
+        initComponents();
         setTablePreferencess(tProdCalcList);
         setTablePreferencess(tCalcAllData);
+
+        aboutDialog = new AboutDialog(this, true);
+        fc = new JFileChooser();
     }
 
     @SuppressWarnings("unchecked")
@@ -53,6 +56,8 @@ public class MainFrame extends javax.swing.JFrame
         bMoveDown = new javax.swing.JButton();
         bRemoveRow = new javax.swing.JButton();
         bAddRow = new javax.swing.JButton();
+        bCopy = new javax.swing.JButton();
+        bPaste = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         mbFile = new javax.swing.JMenu();
         fNew = new javax.swing.JMenuItem();
@@ -132,22 +137,56 @@ public class MainFrame extends javax.swing.JFrame
         bAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconAddRow.png"))); // NOI18N
         bAddRow.setToolTipText("Додати рядок");
 
+        bCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCopy.png"))); // NOI18N
+        bCopy.setToolTipText("Видалити рядок");
+
+        bPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconPaste.png"))); // NOI18N
+        bPaste.setToolTipText("Видалити рядок");
+
         mbFile.setText("Файл");
 
         fNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         fNew.setText("Створити");
+        fNew.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fNewActionPerformed(evt);
+            }
+        });
         mbFile.add(fNew);
 
         fOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         fOpen.setText("Відкрити");
+        fOpen.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fOpenActionPerformed(evt);
+            }
+        });
         mbFile.add(fOpen);
 
         fSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         fSave.setText("Зберегти");
+        fSave.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fSaveActionPerformed(evt);
+            }
+        });
         mbFile.add(fSave);
 
         fOpenAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         fOpenAs.setText("Зберегти як...");
+        fOpenAs.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fOpenAsActionPerformed(evt);
+            }
+        });
         mbFile.add(fOpenAs);
 
         fLatest.setText("Відкрити останні файли");
@@ -156,11 +195,25 @@ public class MainFrame extends javax.swing.JFrame
 
         fPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         fPrint.setText("Друк");
+        fPrint.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fPrintActionPerformed(evt);
+            }
+        });
         mbFile.add(fPrint);
         mbFile.add(fExitBar);
 
         fExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         fExit.setText("Вихід");
+        fExit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                fExitActionPerformed(evt);
+            }
+        });
         mbFile.add(fExit);
 
         menuBar.add(mbFile);
@@ -168,9 +221,23 @@ public class MainFrame extends javax.swing.JFrame
         mbCalc.setText("Розрахунки");
 
         cCalcProd.setText("Розрахувати продуктивність");
+        cCalcProd.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                cCalcProdActionPerformed(evt);
+            }
+        });
         mbCalc.add(cCalcProd);
 
         cCalcAll.setText("Розрахувати разом по галузі");
+        cCalcAll.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                cCalcAllActionPerformed(evt);
+            }
+        });
         mbCalc.add(cCalcAll);
 
         menuBar.add(mbCalc);
@@ -209,7 +276,9 @@ public class MainFrame extends javax.swing.JFrame
                             .addComponent(bMoveUp, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bMoveDown, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bAddRow, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bRemoveRow, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(bRemoveRow, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bPaste, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bCalcProd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -221,7 +290,14 @@ public class MainFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spProdCalcList, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(spProdCalcList, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spCalcAllData, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bCalcProd)
+                            .addComponent(bCalcAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bMoveUp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -229,40 +305,77 @@ public class MainFrame extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAddRow)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bRemoveRow)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spCalcAllData, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bCalcProd)
-                    .addComponent(bCalcAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(bRemoveRow)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bCopy)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bPaste)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //Start HELP listeners
     private void hAboutActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_hAboutActionPerformed
     {//GEN-HEADEREND:event_hAboutActionPerformed
         aboutDialog.setVisible(true);
     }//GEN-LAST:event_hAboutActionPerformed
-
+    //End HELP listeners
     private void bCalcAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bCalcAllActionPerformed
     {//GEN-HEADEREND:event_bCalcAllActionPerformed
-        setCalcAllData(1, 4, 88);
+        setCalcAllData(ListProcessor.calcAll(listTableModel));
     }//GEN-LAST:event_bCalcAllActionPerformed
 
     private void bCalcProdActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bCalcProdActionPerformed
     {//GEN-HEADEREND:event_bCalcProdActionPerformed
-        setCalcAllData(10, 45, 880);
+        ListProcessor.calcProd(listTableModel);
     }//GEN-LAST:event_bCalcProdActionPerformed
+    //Start FILE listeners
+    private void fNewActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fNewActionPerformed
+    {//GEN-HEADEREND:event_fNewActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    }//GEN-LAST:event_fNewActionPerformed
+
+    private void fOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fOpenActionPerformed
+    {//GEN-HEADEREND:event_fOpenActionPerformed
+        openFile();
+    }//GEN-LAST:event_fOpenActionPerformed
+
+    private void fSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fSaveActionPerformed
+    {//GEN-HEADEREND:event_fSaveActionPerformed
+        saveFile();
+    }//GEN-LAST:event_fSaveActionPerformed
+
+    private void fOpenAsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fOpenAsActionPerformed
+    {//GEN-HEADEREND:event_fOpenAsActionPerformed
+
+    }//GEN-LAST:event_fOpenAsActionPerformed
+
+    private void fPrintActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fPrintActionPerformed
+    {//GEN-HEADEREND:event_fPrintActionPerformed
+        System.out.println(listTableModel.toString());//debug print
+    }//GEN-LAST:event_fPrintActionPerformed
+
+    private void fExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fExitActionPerformed
+    {//GEN-HEADEREND:event_fExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_fExitActionPerformed
+    //End FILE listeners
+    //Start CALC listeners
+    private void cCalcProdActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cCalcProdActionPerformed
+    {//GEN-HEADEREND:event_cCalcProdActionPerformed
+        ListProcessor.calcProd(listTableModel);
+    }//GEN-LAST:event_cCalcProdActionPerformed
+
+    private void cCalcAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cCalcAllActionPerformed
+    {//GEN-HEADEREND:event_cCalcAllActionPerformed
+        setCalcAllData(ListProcessor.calcAll(listTableModel));
+    }//GEN-LAST:event_cCalcAllActionPerformed
+    //End CALC listeners
+
     public static void main(String args[])
     {
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable()
         {
             public void run()
@@ -271,17 +384,17 @@ public class MainFrame extends javax.swing.JFrame
             }
         });
     }
-    
-    public void setCalcAllData(float grossOut, int workers, float prod)
+
+    public void setCalcAllData(Object allData[])
     {
-        javax.swing.table.JTableHeader th = tCalcAllData.getTableHeader();
-        javax.swing.table.TableColumnModel tcm = th.getColumnModel();
-        tcm.getColumn(2).setHeaderValue(grossOut);
-        tcm.getColumn(3).setHeaderValue(workers);
-        tcm.getColumn(4).setHeaderValue(prod);
+        JTableHeader th = tCalcAllData.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        tcm.getColumn(2).setHeaderValue(allData[0]);
+        tcm.getColumn(3).setHeaderValue(allData[1]);
+        tcm.getColumn(4).setHeaderValue(allData[2]);
         th.repaint();
     }
-    
+
     public static void setTablePreferencess(javax.swing.JTable jTable)
     {
         jTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
@@ -292,15 +405,45 @@ public class MainFrame extends javax.swing.JFrame
         jTable.getColumnModel().getColumn(2).setPreferredWidth(140);
         jTable.getColumnModel().getColumn(3).setPreferredWidth(160);
         jTable.getColumnModel().getColumn(4).setPreferredWidth(160);
-        
+
+    }
+
+    private void saveFile()
+    {
+        int returnVal = fc.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            listFile = fc.getSelectedFile();
+            System.out.println("Saving: " + listFile.getName() + ".");
+        }
+        else
+        {
+            System.out.println("Save command cancelled by user.");
+        }
+    }
+
+    private void openFile()
+    {
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            listFile = fc.getSelectedFile();
+            System.out.println("Opening: " + listFile.getName() + ".");
+        }
+        else
+        {
+            System.out.println("Open command cancelled by user.");
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAddRow;
     private javax.swing.JButton bCalcAll;
     private javax.swing.JButton bCalcProd;
+    private javax.swing.JButton bCopy;
     private javax.swing.JButton bMoveDown;
     private javax.swing.JButton bMoveUp;
+    private javax.swing.JButton bPaste;
     private javax.swing.JButton bRemoveRow;
     private javax.swing.JMenuItem cCalcAll;
     private javax.swing.JMenuItem cCalcProd;
@@ -325,5 +468,7 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JTable tProdCalcList;
     // End of variables declaration//GEN-END:variables
     private ListTableModel listTableModel;
-    private javax.swing.table.DefaultTableModel DacalcAllData;
+    private final AboutDialog aboutDialog;
+    private JFileChooser fc;
+    private File listFile;
 }
