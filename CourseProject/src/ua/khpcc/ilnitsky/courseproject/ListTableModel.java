@@ -63,10 +63,15 @@ public class ListTableModel extends DefaultTableModel
     {
         return types[columnIndex];
     }
-
+    
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {
         return canEdit[columnIndex];
+    }
+    
+    public void clearTable()
+    {
+        super.dataVector.removeAllElements();
     }
     
     @Override
