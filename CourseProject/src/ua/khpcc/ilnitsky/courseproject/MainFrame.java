@@ -18,9 +18,11 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -66,6 +68,7 @@ public class MainFrame extends javax.swing.JFrame
         bRemoveRow = new javax.swing.JButton();
         tbCopyRowBar = new javax.swing.JToolBar.Separator();
         bCopyRow = new javax.swing.JButton();
+        bCutRow = new javax.swing.JButton();
         bPasteRow = new javax.swing.JButton();
         calcToolBar = new javax.swing.JToolBar();
         bCalcProd = new javax.swing.JButton();
@@ -89,6 +92,7 @@ public class MainFrame extends javax.swing.JFrame
         eRemoveRow = new javax.swing.JMenuItem();
         eCopyRowBar = new javax.swing.JPopupMenu.Separator();
         eCopyRow = new javax.swing.JMenuItem();
+        eCopyRow1 = new javax.swing.JMenuItem();
         ePasteRow = new javax.swing.JMenuItem();
         mbCalc = new javax.swing.JMenu();
         cCalcProd = new javax.swing.JMenuItem();
@@ -154,6 +158,7 @@ public class MainFrame extends javax.swing.JFrame
 
         bSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconSave24.png"))); // NOI18N
         bSave.setToolTipText("Зберегти файл");
+        bSave.setActionCommand("save");
         bSave.setFocusable(false);
         bSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         bSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -168,6 +173,7 @@ public class MainFrame extends javax.swing.JFrame
 
         bSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconSaveAs24.png"))); // NOI18N
         bSaveAs.setToolTipText("Зберегти файл з вибраним іменем");
+        bSaveAs.setActionCommand("saveas");
         bSaveAs.setFocusable(false);
         bSaveAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         bSaveAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -175,55 +181,121 @@ public class MainFrame extends javax.swing.JFrame
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                saveAsActionPerformed(evt);
+                saveActionPerformed(evt);
             }
         });
         fileToolBar.add(bSaveAs);
 
         editToolBar.setRollover(true);
 
-        bMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveUp24.png"))); // NOI18N
+        bMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveUpRow24.png"))); // NOI18N
         bMoveUp.setToolTipText("Підняти рядок вище");
+        bMoveUp.setActionCommand("up");
         bMoveUp.setMaximumSize(new java.awt.Dimension(27, 27));
         bMoveUp.setMinimumSize(new java.awt.Dimension(27, 27));
         bMoveUp.setPreferredSize(new java.awt.Dimension(27, 27));
+        bMoveUp.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                moveActionPerformed(evt);
+            }
+        });
         editToolBar.add(bMoveUp);
 
-        bMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveDown24.png"))); // NOI18N
+        bMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveDownRow24.png"))); // NOI18N
         bMoveDown.setToolTipText("Опустити рядок нижче");
+        bMoveDown.setActionCommand("down");
         bMoveDown.setMaximumSize(new java.awt.Dimension(27, 27));
         bMoveDown.setMinimumSize(new java.awt.Dimension(27, 27));
         bMoveDown.setPreferredSize(new java.awt.Dimension(27, 27));
+        bMoveDown.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                moveActionPerformed(evt);
+            }
+        });
         editToolBar.add(bMoveDown);
         editToolBar.add(tbAddRowBar);
 
         bAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconAddRow24.png"))); // NOI18N
         bAddRow.setToolTipText("Додати рядок");
+        bAddRow.setActionCommand("add");
         bAddRow.setMaximumSize(new java.awt.Dimension(27, 27));
         bAddRow.setMinimumSize(new java.awt.Dimension(27, 27));
         bAddRow.setPreferredSize(new java.awt.Dimension(27, 27));
+        bAddRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addRmRowActionPerformed(evt);
+            }
+        });
         editToolBar.add(bAddRow);
 
         bRemoveRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconRemoveRow24.png"))); // NOI18N
         bRemoveRow.setToolTipText("Видалити рядок");
+        bRemoveRow.setActionCommand("rm");
         bRemoveRow.setMaximumSize(new java.awt.Dimension(27, 27));
         bRemoveRow.setMinimumSize(new java.awt.Dimension(27, 27));
         bRemoveRow.setPreferredSize(new java.awt.Dimension(27, 27));
+        bRemoveRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addRmRowActionPerformed(evt);
+            }
+        });
         editToolBar.add(bRemoveRow);
         editToolBar.add(tbCopyRowBar);
 
-        bCopyRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCopy24.png"))); // NOI18N
+        bCopyRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCopyRow24.png"))); // NOI18N
         bCopyRow.setToolTipText("Скопіювати рядок");
+        bCopyRow.setActionCommand("copy");
         bCopyRow.setMaximumSize(new java.awt.Dimension(27, 27));
         bCopyRow.setMinimumSize(new java.awt.Dimension(27, 27));
         bCopyRow.setPreferredSize(new java.awt.Dimension(27, 27));
+        bCopyRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
         editToolBar.add(bCopyRow);
 
-        bPasteRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconPaste24.png"))); // NOI18N
+        bCutRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCutRow24.png"))); // NOI18N
+        bCutRow.setToolTipText("Вирізати рядок");
+        bCutRow.setActionCommand("cut");
+        bCutRow.setFocusable(false);
+        bCutRow.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bCutRow.setMaximumSize(new java.awt.Dimension(27, 27));
+        bCutRow.setMinimumSize(new java.awt.Dimension(27, 27));
+        bCutRow.setPreferredSize(new java.awt.Dimension(27, 27));
+        bCutRow.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bCutRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
+        editToolBar.add(bCutRow);
+
+        bPasteRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconPasteRow24.png"))); // NOI18N
         bPasteRow.setToolTipText("Вставити рядок");
+        bPasteRow.setActionCommand("paste");
         bPasteRow.setMaximumSize(new java.awt.Dimension(27, 27));
         bPasteRow.setMinimumSize(new java.awt.Dimension(27, 27));
         bPasteRow.setPreferredSize(new java.awt.Dimension(27, 27));
+        bPasteRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
         editToolBar.add(bPasteRow);
 
         calcToolBar.setRollover(true);
@@ -288,6 +360,7 @@ public class MainFrame extends javax.swing.JFrame
         fSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconSave16.png"))); // NOI18N
         fSave.setText("Зберегти");
         fSave.setToolTipText("Зберегти файл");
+        fSave.setActionCommand("save");
         fSave.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -301,7 +374,7 @@ public class MainFrame extends javax.swing.JFrame
         fOpenAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconSaveAs16.png"))); // NOI18N
         fOpenAs.setText("Зберегти як...");
         fOpenAs.setToolTipText("Зберегти файл з вибраним іменем");
-        fOpenAs.setActionCommand("saveAs");
+        fOpenAs.setActionCommand("saveas");
         fOpenAs.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -347,35 +420,96 @@ public class MainFrame extends javax.swing.JFrame
         mEdit.setText("Редагування");
 
         eMoveUp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_UP, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        eMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveUp16.png"))); // NOI18N
+        eMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveUpRow16.png"))); // NOI18N
         eMoveUp.setText("Підняти рядок");
+        eMoveUp.setActionCommand("up");
+        eMoveUp.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                moveActionPerformed(evt);
+            }
+        });
         mEdit.add(eMoveUp);
 
         eMoveDown.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DOWN, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        eMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveDown16.png"))); // NOI18N
+        eMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconMoveDownRow16.png"))); // NOI18N
         eMoveDown.setText("Опустити рядок");
+        eMoveDown.setActionCommand("down");
+        eMoveDown.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                moveActionPerformed(evt);
+            }
+        });
         mEdit.add(eMoveDown);
         mEdit.add(eAddRowBar);
 
         eAddRow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         eAddRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconAddRow16.png"))); // NOI18N
         eAddRow.setText("Додати рядок");
+        eAddRow.setActionCommand("add");
+        eAddRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addRmRowActionPerformed(evt);
+            }
+        });
         mEdit.add(eAddRow);
 
         eRemoveRow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         eRemoveRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconRemoveRow16.png"))); // NOI18N
         eRemoveRow.setText("Видалити рядок");
+        eRemoveRow.setActionCommand("rm");
+        eRemoveRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addRmRowActionPerformed(evt);
+            }
+        });
         mEdit.add(eRemoveRow);
         mEdit.add(eCopyRowBar);
 
         eCopyRow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        eCopyRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCopy16.png"))); // NOI18N
+        eCopyRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCopyRow16.png"))); // NOI18N
         eCopyRow.setText("Скопіювати рядок");
+        eCopyRow.setActionCommand("copy");
+        eCopyRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
         mEdit.add(eCopyRow);
 
+        eCopyRow1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        eCopyRow1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconCutRow16.png"))); // NOI18N
+        eCopyRow1.setText("Вирізати рядок");
+        eCopyRow1.setActionCommand("cut");
+        eCopyRow1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
+        mEdit.add(eCopyRow1);
+
         ePasteRow.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        ePasteRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconPaste16.png"))); // NOI18N
+        ePasteRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/iconPasteRow16.png"))); // NOI18N
         ePasteRow.setText("Вставити рядок");
+        ePasteRow.setActionCommand("paste");
+        ePasteRow.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                bufferActionPerformed(evt);
+            }
+        });
         mEdit.add(ePasteRow);
 
         menuBar.add(mEdit);
@@ -468,52 +602,45 @@ public class MainFrame extends javax.swing.JFrame
         {
             listFile = null;
             listTableModel.clearTable();
+            listTableModel.fillWithEmtyRows();
             tProdCalcList.repaint();
         }
     }//GEN-LAST:event_newActionPerformed
 
     private void openActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openActionPerformed
     {//GEN-HEADEREND:event_openActionPerformed
-        int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION)
+        if (listFile == null || saveBeforeLoose())
         {
-            listFile = fc.getSelectedFile();
-            try
+            int returnVal = fc.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
             {
-                CsvParser.csvFileToListModel(listTableModel, listFile);
-            }
-            catch (Exception ex)
-            {
-                JOptionPane.showMessageDialog(this, "Невірний формат файлу або файл пошкоджено!", "Помилка!", JOptionPane.ERROR_MESSAGE);
-            }
+                listFile = fc.getSelectedFile();
+                try
+                {
+                    CsvConverter.csvFileToListModel(listTableModel, listFile);
+                }
+                catch (Exception ex)
+                {
+                    JOptionPane.showMessageDialog(this, "Невірний формат файлу або файл пошкоджено!", "Помилка!", JOptionPane.ERROR_MESSAGE);
 
-            tProdCalcList.repaint();
+                    listFile = null;
+                    listTableModel.clearTable();
+                    listTableModel.fillWithEmtyRows();
+                }
+
+                tProdCalcList.repaint();
+            }
         }
     }//GEN-LAST:event_openActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveActionPerformed
     {//GEN-HEADEREND:event_saveActionPerformed
-        if ("saveas".equals(evt.getActionCommand()) || null == listFile)
-        {
-            int returnVal = fc.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
-                listFile = fc.getSelectedFile();
-            }
-        }
-        else
-        {
-            saveFile();
-        }
+        saveFile(evt.getActionCommand());
     }//GEN-LAST:event_saveActionPerformed
-
-    private void saveAsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveAsActionPerformed
-    {//GEN-HEADEREND:event_saveAsActionPerformed
-
-    }//GEN-LAST:event_saveAsActionPerformed
 
     private void fPrintActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fPrintActionPerformed
     {//GEN-HEADEREND:event_fPrintActionPerformed
+        System.out.println(listTableModel.isEmpty());
         System.out.println(listTableModel.toString());//debug print
     }//GEN-LAST:event_fPrintActionPerformed
 
@@ -537,6 +664,93 @@ public class MainFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_hAboutActionPerformed
         aboutDialog.setVisible(true);
     }//GEN-LAST:event_hAboutActionPerformed
+
+    private void moveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_moveActionPerformed
+    {//GEN-HEADEREND:event_moveActionPerformed
+        int sRow = tProdCalcList.getSelectedRow();
+
+        if (sRow > -1)
+        {
+            int to = 0;
+
+            switch (evt.getActionCommand())
+            {
+                case "up":
+                    to = sRow - 1;
+                    break;
+                case "down":
+                    to = sRow + 1;
+            }
+            try
+            {
+                listTableModel.swapRows(sRow, to);
+                tProdCalcList.changeSelection(to, 0, false, false);
+            }
+            catch (Exception e)
+            {
+            }
+        }
+    }//GEN-LAST:event_moveActionPerformed
+
+    private void bufferActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bufferActionPerformed
+    {//GEN-HEADEREND:event_bufferActionPerformed
+        int sRow = tProdCalcList.getSelectedRow();
+
+        if (evt.getActionCommand().equals("paste"))
+        {
+            if (rowBuffer != null)
+            {
+                sRow = sRow > -1 ? sRow + 1 : listTableModel.getRowCount();
+                listTableModel.insertRow(sRow, rowBuffer);
+            }
+        }
+        else
+        {
+            if (sRow > -1)
+            {
+                rowBuffer = new Object[]
+                {
+                    sRow,
+                    listTableModel.getValueAt(sRow, 1),
+                    listTableModel.getValueAt(sRow, 2),
+                    listTableModel.getValueAt(sRow, 3),
+                    listTableModel.getValueAt(sRow, 4)
+                };
+
+                if (evt.getActionCommand().equals("cut"))
+                {
+                    listTableModel.removeRow(sRow);
+                }
+            }
+        }
+        listTableModel.fixRowsIndex(sRow);
+        tProdCalcList.changeSelection(sRow, 0, false, false);
+    }//GEN-LAST:event_bufferActionPerformed
+
+    private void addRmRowActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addRmRowActionPerformed
+    {//GEN-HEADEREND:event_addRmRowActionPerformed
+        int sRow = tProdCalcList.getSelectedRow();
+
+        switch (evt.getActionCommand())
+        {
+            case "rm":
+                if (sRow > -1)
+                {
+                    listTableModel.removeRow(sRow);
+                }
+                break;
+            case "add":
+                sRow = sRow > -1 ? sRow + 1 : listTableModel.getRowCount();
+                listTableModel.insertRow(sRow, //Якщо жодного рядку не виділено, то ставимо у кінець, інекше - після зазначенного
+                        new Object[]
+                        {
+                            listTableModel.getRowCount(), "", null, null, null
+                        });
+                break;
+        }
+        listTableModel.fixRowsIndex(sRow);
+        tProdCalcList.changeSelection(sRow, 0, false, false);
+    }//GEN-LAST:event_addRmRowActionPerformed
     //End HELP listeners
 
     private void setCalcAllData(Object allData[])
@@ -551,7 +765,6 @@ public class MainFrame extends javax.swing.JFrame
 
     private static void setTablePreferencess(javax.swing.JTable jTable)
     {
-        //jTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jTable.getTableHeader().setResizingAllowed(false);
         jTable.getTableHeader().setReorderingAllowed(false);
         jTable.getColumnModel().getColumn(0).setPreferredWidth(30);
@@ -560,6 +773,7 @@ public class MainFrame extends javax.swing.JFrame
         jTable.getColumnModel().getColumn(3).setPreferredWidth(160);
         jTable.getColumnModel().getColumn(4).setPreferredWidth(155);
 
+        jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
 
     private boolean saveBeforeLoose()
@@ -582,7 +796,7 @@ public class MainFrame extends javax.swing.JFrame
             saveFile();
         }
 
-        if (result == 2)//Якщо натиснуто "Скасувати"
+        if (result == 2 || result == -1)//Якщо натиснуто "Скасувати"
         {
             return false;
         }
@@ -594,7 +808,35 @@ public class MainFrame extends javax.swing.JFrame
 
     private void saveFile()
     {
-        //TODO: Add file saving
+        saveFile(null);
+    }
+
+    private void saveFile(String actionCommand)
+    {
+        if (actionCommand.equals("saveas") || (listFile == null && !listTableModel.isEmpty()))
+        {
+            int returnVal = fc.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                listFile = fc.getSelectedFile();
+            }
+        }
+        
+        try
+        {
+            if (!listFile.exists())
+            {
+                listFile.createNewFile();
+            }
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listFile), "Cp1251"));
+            bw.write(CsvConverter.listModelToCsvString(listTableModel));
+            bw.close();
+        }
+        catch (IOException ex)
+        {
+            JOptionPane.showMessageDialog(this, "Неможливо зберегти файл!", "Помилка!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String args[])
@@ -620,6 +862,7 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JButton bCalcAll;
     private javax.swing.JButton bCalcProd;
     private javax.swing.JButton bCopyRow;
+    private javax.swing.JButton bCutRow;
     private javax.swing.JButton bMoveDown;
     private javax.swing.JButton bMoveUp;
     private javax.swing.JButton bNew;
@@ -634,6 +877,7 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JMenuItem eAddRow;
     private javax.swing.JPopupMenu.Separator eAddRowBar;
     private javax.swing.JMenuItem eCopyRow;
+    private javax.swing.JMenuItem eCopyRow1;
     private javax.swing.JPopupMenu.Separator eCopyRowBar;
     private javax.swing.JMenuItem eMoveDown;
     private javax.swing.JMenuItem eMoveUp;
@@ -663,8 +907,10 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JToolBar.Separator tbAddRowBar;
     private javax.swing.JToolBar.Separator tbCopyRowBar;
     // End of variables declaration//GEN-END:variables
-    private ListTableModel listTableModel;
+    private final ListTableModel listTableModel;
     private final AboutDialog aboutDialog;
-    private JFileChooser fc;
+    private final JFileChooser fc;
     private File listFile;
+    private Object[] rowBuffer;
+
 }

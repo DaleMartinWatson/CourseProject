@@ -1,2 +1,2 @@
-javac ./ua/khpcc/ilnitsky/javaasm/JavaAsm.java
+javac ./ua/khpcc/ilnitsky/courseproject/JavaAsm.java
 pause

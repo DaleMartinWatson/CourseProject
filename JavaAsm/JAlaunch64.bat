@@ -1,2 +1,2 @@
-java -classpath . ua.khpcc.ilnitsky.javaasm.JavaAsm
+java -classpath . ua.khpcc.ilnitsky.courseproject.JavaAsm
 pause

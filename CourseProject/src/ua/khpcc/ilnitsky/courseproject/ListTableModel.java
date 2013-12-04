@@ -18,6 +18,7 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Dmitry Ilnitsky
  */
-public class ListTableModel extends DefaultTableModel
+public final class ListTableModel extends DefaultTableModel
 {
     private final Class[] types = new Class[]
     {
@@ -42,42 +43,95 @@ public class ListTableModel extends DefaultTableModel
 
     ListTableModel(int rowCount)
     {
-        super();
-        Vector v = new Vector(rowCount);
-        for(int i = 1; i < (rowCount + 1); i++)
-        {
-            //створення порожніх пронумерованих рядків
-            Vector<Object> oV = new Vector<>(5);
-            oV.addElement(i);
-            v.addElement(oV);
-        }
-        super.setDataVector(v, convertToVector(columnNames));
+        super.setDataVector(new Vector(), convertToVector(columnNames));
+        fillWithEmtyRows(rowCount);
     }
-    
+
     ListTableModel()
     {
         this(10);
     }
 
+    @Override
     public Class getColumnClass(int columnIndex)
     {
         return types[columnIndex];
     }
-    
+
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {
         return canEdit[columnIndex];
     }
-    
+
     public void clearTable()
     {
         super.dataVector.removeAllElements();
     }
-    
+
     @Override
     public String toString()
     {
-        return super.toString() + ": " + getDataVector().toString();
+        return super.toString() + ": " + dataVector.toString();
     }
 
+    public void fillWithEmtyRows()
+    {
+        fillWithEmtyRows(10);
+    }
+
+    public void fillWithEmtyRows(int rowCount)
+    {
+        for (int i = 1; i < (rowCount + 1); i++)
+        {
+            //створення порожніх пронумерованих рядків
+            Vector<Object> oV = new Vector<>(5);
+            oV.addElement(i);
+            addRow(oV);
+        }
+    }
+
+    public void swapRows(int row1, int row2)
+    {
+        Collections.swap(dataVector, row1, row2);
+        setValueAt(row1 + 1, row1, 0);
+        setValueAt(row2 + 1, row2, 0);
+        fireTableRowsUpdated(row1, row2);
+    }
+
+    public void fixRowsIndex()
+    {
+        fixRowsIndex(0);
+    }
+
+    public void fixRowsIndex(int from)
+    {
+        for (int i = from; i < getRowCount(); i++)
+        {
+            setValueAt(i + 1, i, 0);
+        }
+    }
+
+    public void setDataVector(Vector dataVector)
+    {
+        this.dataVector = dataVector;
+        fireTableStructureChanged();
+    }
+    
+    public boolean isEmpty()
+    {
+        Vector<Object> eV = new Vector<>(5);
+        eV.setSize(5);
+        
+        for(int i = 0; i < dataVector.size(); i++)
+        {
+            eV.setElementAt(i + 1, 0);
+            if(!((Vector) dataVector.elementAt(i)).equals((eV)))
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }

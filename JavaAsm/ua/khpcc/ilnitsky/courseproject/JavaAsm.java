@@ -1,4 +1,4 @@
-package ua.khpcc.ilnitsky.javaasm;
+package ua.khpcc.ilnitsky.courseproject;
 
 import java.io.Console;
 
