@@ -5,21 +5,22 @@ import java.io.Console;
 public class JavaAsm
 {
     //JavaAsm.dll test class
-    native public static float asmFAdd(float num1, float num2);
-    native public static float asmFMul(float num1, float num2);
-    native public static float asmFDiv(float dvd, float dvs);// dvd - dividend, dvs - divisor
+    native public static float asmAdd(float num1, float num2);
+    native public static float asmMul(float num1, float num2);
+    native public static float asmDiv(float dvd, float dvs);// dvd - dividend, dvs - divisor
     
     
     static
     {
         try
         {
-        System.loadLibrary("JavaAsm");        // загружаем библиотеку JavaAsm.dll
+            System.loadLibrary("JavaAsm-windows" + System.getProperty("sun.arch.data.model"));
         }
         catch( UnsatisfiedLinkError ule)
         {
             System.out.println("ERROR: Can't load JavaAsm.dll");
             ule.printStackTrace();
+            System.exit(1);
         }
     }
     
@@ -50,17 +51,17 @@ public class JavaAsm
                 x = Float.parseFloat(command[1]);
                 y = Float.parseFloat(command[2]);
                 
-                if(command[0].equalsIgnoreCase("fadd"))
+                if(command[0].equalsIgnoreCase("add"))
                 {
-                    console.printf("Native result: %f; Java result: %f;%n", asmFAdd(x, y), (x + y));
+                    console.printf("Native result: %f; Java result: %f;%n", asmAdd(x, y), (x + y));
                 }
-                if(command[0].equalsIgnoreCase("fmul"))
+                if(command[0].equalsIgnoreCase("mul"))
                 {
-                    console.printf("Native result: %f; Java result: %f;%n", asmFMul(x, y), (x * y));
+                    console.printf("Native result: %f; Java result: %f;%n", asmMul(x, y), (x * y));
                 }
-                else if(command[0].equalsIgnoreCase("fdiv"))
+                else if(command[0].equalsIgnoreCase("div"))
                 {
-                    console.printf("Native result: %f; Java result: %f;%n", asmFDiv(x, y), (x / y));
+                    console.printf("Native result: %f; Java result: %f;%n", asmDiv(x, y), (x / y));
                 }
             }
             catch(java.lang.Exception e)

@@ -18,31 +18,89 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class JavaAsm
 {
-    //native public static float asmFAdd(float num1, float num2);
-    //native public static float asmFMul(float num1, float num2);
-    //native public static float asmFDiv(float dvd, float dvs);//// dvd - dividend, dvs - divisor
-    
-    
+    native public static float asmAdd(float num1, float num2);
+    native public static float asmMul(float num1, float num2);
+    native public static float asmDiv(float dvd, float dvs);
+
     static
     {
-            //System.load("C:\\Users\\DaleMartinWatson\\Desktop\\JavaAsm\\JavaAsm.dll");
-    }   
-   
-    public static float asmFAdd(float num1, float num2)
-    {
-        return num1 + num2;
-    }
-    
-    public static float asmFMul(float num1, float num2)
-    {
-        return num1 * num2;
-    }
-    
-    public static float asmFDiv(float dvd, float dvs)
-    {
-        return dvd / dvs;
+        try
+        {
+            JavaAsm.loadFromJar(getLibNameByOs("JavaAsm"));
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            System.exit(1);
+        }
     }
 
+    private static String getLibNameByOs(String libName) throws Exception
+    {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String vmDataModel = System.getProperty("sun.arch.data.model");
+
+        if (osName.contains("win"))
+        {
+            return libName + "-windows" + vmDataModel + ".dll";
+        }
+        if (osName.contains("mac"))
+        {
+            return libName + ".jnilib";
+        }
+        if (osName.contains("solaris") || osName.contains("sunos"))
+        {
+            return libName + "-solaris" + vmDataModel + ".so";
+        }
+
+        if (osName.contains("linux") || osName.contains("unix"))
+        {
+            return libName + "-linux" + vmDataModel + ".so";
+        }
+
+        throw new Exception("Програма не може працювати з данною операційною системою!");
+    }
+
+    public static void loadFromJar(String libName) throws IOException
+    {
+        File temp = File.createTempFile("lib", "-" + libName);
+        temp.deleteOnExit();
+
+        if (!temp.exists())
+        {
+            throw new FileNotFoundException("Неможливо створити тимчасовий файл: " + temp.getAbsolutePath() + " .");
+        }
+        
+        InputStream is = JavaAsm.class.getResourceAsStream("/lib/" + libName);
+        OutputStream os = new FileOutputStream(temp);
+        
+        
+        byte[] buffer = new byte[1024];
+        int readBytes;
+        try
+        {
+            while ((readBytes = is.read(buffer)) != -1)
+            {
+                os.write(buffer, 0, readBytes);
+            }
+        }
+        finally
+        {
+            os.close();
+            is.close();
+        }
+               
+        System.out.println(libName);
+        System.out.println(temp.getAbsolutePath());
+        System.load(temp.getAbsolutePath());
+    }
 }

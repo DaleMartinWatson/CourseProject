@@ -71,11 +71,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveActionPerformed"/>
               </Events>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="fLatestMenu">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="&#x412;&#x456;&#x434;&#x43a;&#x440;&#x438;&#x442;&#x438; &#x43e;&#x441;&#x442;&#x430;&#x43d;&#x43d;&#x456; &#x444;&#x430;&#x439;&#x43b;&#x438;"/>
-              </Properties>
-            </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="fPrintBar">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fPrint">
@@ -176,7 +171,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="rm"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRmRowActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rmRowActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="eCopyRowBar">
@@ -558,7 +553,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRmRowActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rmRowActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="tbCopyRowBar">

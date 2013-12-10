@@ -18,11 +18,17 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -79,7 +85,6 @@ public class MainFrame extends javax.swing.JFrame
         fOpen = new javax.swing.JMenuItem();
         fSave = new javax.swing.JMenuItem();
         fOpenAs = new javax.swing.JMenuItem();
-        fLatestMenu = new javax.swing.JMenu();
         fPrintBar = new javax.swing.JPopupMenu.Separator();
         fPrint = new javax.swing.JMenuItem();
         fExitBar = new javax.swing.JPopupMenu.Separator();
@@ -244,7 +249,7 @@ public class MainFrame extends javax.swing.JFrame
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                addRmRowActionPerformed(evt);
+                rmRowActionPerformed(evt);
             }
         });
         editToolBar.add(bRemoveRow);
@@ -383,9 +388,6 @@ public class MainFrame extends javax.swing.JFrame
             }
         });
         mbFile.add(fOpenAs);
-
-        fLatestMenu.setText("Відкрити останні файли");
-        mbFile.add(fLatestMenu);
         mbFile.add(fPrintBar);
 
         fPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
@@ -467,7 +469,7 @@ public class MainFrame extends javax.swing.JFrame
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                addRmRowActionPerformed(evt);
+                rmRowActionPerformed(evt);
             }
         });
         mEdit.add(eRemoveRow);
@@ -617,7 +619,29 @@ public class MainFrame extends javax.swing.JFrame
                 listFile = fc.getSelectedFile();
                 try
                 {
-                    CsvConverter.csvFileToListModel(listTableModel, listFile);
+                    //CsvConverter.csvFileToListModel(listTableModel, listFile);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(listFile), charset));
+                    StringBuilder csvStringBuffer = new StringBuilder();
+
+                    if (!br.readLine().equals(
+                            listTableModel.getColumnName(0) + ";"
+                            + listTableModel.getColumnName(1) + ";"
+                            + listTableModel.getColumnName(2) + ";"
+                            + listTableModel.getColumnName(3) + ";"
+                            + listTableModel.getColumnName(4)))
+                    {
+                        throw new Exception();
+                    }
+
+                    String line;
+                    while ((line = br.readLine()) != null)
+                    {
+                        csvStringBuffer.append(line);
+                        csvStringBuffer.append("\n");
+                    }
+
+                    listTableModel.setDataVector(CsvConverter.csvStringToDataVector(csvStringBuffer.toString()));
+                    setTablePreferencess(tProdCalcList);
                 }
                 catch (Exception ex)
                 {
@@ -635,12 +659,11 @@ public class MainFrame extends javax.swing.JFrame
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveActionPerformed
     {//GEN-HEADEREND:event_saveActionPerformed
-        saveFile(evt.getActionCommand());
+        saveFile(evt.getActionCommand().equals("saveas"));
     }//GEN-LAST:event_saveActionPerformed
 
     private void fPrintActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fPrintActionPerformed
     {//GEN-HEADEREND:event_fPrintActionPerformed
-        System.out.println(listTableModel.isEmpty());
         System.out.println(listTableModel.toString());//debug print
     }//GEN-LAST:event_fPrintActionPerformed
 
@@ -698,24 +721,16 @@ public class MainFrame extends javax.swing.JFrame
 
         if (evt.getActionCommand().equals("paste"))
         {
-            if (rowBuffer != null)
+            if (rowBuffer != null && listTableModel.getRowCount() > 0)
             {
-                sRow = sRow > -1 ? sRow + 1 : listTableModel.getRowCount();
-                listTableModel.insertRow(sRow, rowBuffer);
+                listTableModel.putRowAt(sRow, rowBuffer);
             }
         }
         else
         {
             if (sRow > -1)
             {
-                rowBuffer = new Object[]
-                {
-                    sRow,
-                    listTableModel.getValueAt(sRow, 1),
-                    listTableModel.getValueAt(sRow, 2),
-                    listTableModel.getValueAt(sRow, 3),
-                    listTableModel.getValueAt(sRow, 4)
-                };
+                rowBuffer = listTableModel.getRow(sRow);
 
                 if (evt.getActionCommand().equals("cut"))
                 {
@@ -731,26 +746,27 @@ public class MainFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_addRmRowActionPerformed
         int sRow = tProdCalcList.getSelectedRow();
 
-        switch (evt.getActionCommand())
+        Vector<Object> eV = new Vector<>(5);
+        eV.setSize(5);
+        eV.setElementAt(sRow + 1, 0);
+        listTableModel.putRowAt(sRow, eV);
+
+        listTableModel.fixRowsIndex(sRow);
+        tProdCalcList.changeSelection(sRow + 1, 0, false, false);
+    }//GEN-LAST:event_addRmRowActionPerformed
+
+    private void rmRowActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rmRowActionPerformed
+    {//GEN-HEADEREND:event_rmRowActionPerformed
+        int sRow = tProdCalcList.getSelectedRow();
+
+        if (sRow > -1 && listTableModel.getRowCount() > 0)
         {
-            case "rm":
-                if (sRow > -1)
-                {
-                    listTableModel.removeRow(sRow);
-                }
-                break;
-            case "add":
-                sRow = sRow > -1 ? sRow + 1 : listTableModel.getRowCount();
-                listTableModel.insertRow(sRow, //Якщо жодного рядку не виділено, то ставимо у кінець, інекше - після зазначенного
-                        new Object[]
-                        {
-                            listTableModel.getRowCount(), "", null, null, null
-                        });
-                break;
+            listTableModel.removeRow(sRow);
         }
+
         listTableModel.fixRowsIndex(sRow);
         tProdCalcList.changeSelection(sRow, 0, false, false);
-    }//GEN-LAST:event_addRmRowActionPerformed
+    }//GEN-LAST:event_rmRowActionPerformed
     //End HELP listeners
 
     private void setCalcAllData(Object allData[])
@@ -774,6 +790,7 @@ public class MainFrame extends javax.swing.JFrame
         jTable.getColumnModel().getColumn(4).setPreferredWidth(155);
 
         jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable.putClientProperty("terminateEditOnFocusLost", true);
     }
 
     private boolean saveBeforeLoose()
@@ -793,7 +810,7 @@ public class MainFrame extends javax.swing.JFrame
 
         if (result == 0)
         {
-            saveFile();
+            saveFile(false);
         }
 
         if (result == 2 || result == -1)//Якщо натиснуто "Скасувати"
@@ -806,14 +823,9 @@ public class MainFrame extends javax.swing.JFrame
         }
     }
 
-    private void saveFile()
+    private void saveFile(boolean saveas)
     {
-        saveFile(null);
-    }
-
-    private void saveFile(String actionCommand)
-    {
-        if (actionCommand.equals("saveas") || (listFile == null && !listTableModel.isEmpty()))
+        if (saveas || (listFile == null && !listTableModel.isEmpty()))
         {
             int returnVal = fc.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -821,7 +833,7 @@ public class MainFrame extends javax.swing.JFrame
                 listFile = fc.getSelectedFile();
             }
         }
-        
+
         try
         {
             if (!listFile.exists())
@@ -829,7 +841,7 @@ public class MainFrame extends javax.swing.JFrame
                 listFile.createNewFile();
             }
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listFile), "Cp1251"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listFile), charset));
             bw.write(CsvConverter.listModelToCsvString(listTableModel));
             bw.close();
         }
@@ -886,7 +898,6 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JToolBar editToolBar;
     private javax.swing.JMenuItem fExit;
     private javax.swing.JPopupMenu.Separator fExitBar;
-    private javax.swing.JMenu fLatestMenu;
     private javax.swing.JMenuItem fNew;
     private javax.swing.JMenuItem fOpen;
     private javax.swing.JMenuItem fOpenAs;
@@ -911,6 +922,8 @@ public class MainFrame extends javax.swing.JFrame
     private final AboutDialog aboutDialog;
     private final JFileChooser fc;
     private File listFile;
-    private Object[] rowBuffer;
+    private Vector rowBuffer;
+
+    private static final String charset = "Cp1251";
 
 }

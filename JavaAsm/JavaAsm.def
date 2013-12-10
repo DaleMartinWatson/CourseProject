@@ -1,6 +1,0 @@
-LIBRARY JavaAsm
-EXPORTS
-    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFAdd
-    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFMul
-    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFDiv
-    

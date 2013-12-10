@@ -87,7 +87,7 @@ public final class ListTableModel extends DefaultTableModel
             //створення порожніх пронумерованих рядків
             Vector<Object> oV = new Vector<>(5);
             oV.addElement(i);
-            addRow(oV);
+            super.addRow(oV);
         }
     }
 
@@ -117,21 +117,39 @@ public final class ListTableModel extends DefaultTableModel
         this.dataVector = dataVector;
         fireTableStructureChanged();
     }
-    
+
     public boolean isEmpty()
     {
         Vector<Object> eV = new Vector<>(5);
         eV.setSize(5);
-        
-        for(int i = 0; i < dataVector.size(); i++)
+
+        for (int i = 0; i < dataVector.size(); i++)
         {
             eV.setElementAt(i + 1, 0);
-            if(!((Vector) dataVector.elementAt(i)).equals((eV)))
+            if (!((Vector) dataVector.elementAt(i)).equals((eV)))
             {
                 return false;
             }
         }
-        
+
         return true;
+    }
+
+    public void putRowAt(int at, Vector row)
+    {
+        if (getRowCount() > 0)
+        {
+            at = at > -1 ? at + 1 : getRowCount();
+            insertRow(at, (Vector) row.clone());
+        }
+        else
+        {
+            addRow((Vector) row.clone());
+        }
+    }
+    
+    public Vector getRow(int i)
+    {
+        return (Vector) dataVector.elementAt(i);
     }
 }

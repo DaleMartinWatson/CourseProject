@@ -1,0 +1,5 @@
+LIBRARY JavaAsm-windows64
+EXPORTS
+    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmAdd
+    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmMul
+    Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmDiv

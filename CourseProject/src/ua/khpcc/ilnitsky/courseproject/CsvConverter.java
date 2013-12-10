@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Vector;
 
 /**
  *
@@ -35,6 +36,7 @@ public class CsvConverter
 {
     private static final char separator = ';';
     private static final char specSymbol = '"';
+    private static final char lineBreak = '\n';
 
     public static String listModelToCsvString(ListTableModel ltm) throws UnsupportedEncodingException, FileNotFoundException, IOException
     {
@@ -73,72 +75,66 @@ public class CsvConverter
         return sb.toString();
     }
 
-    public static void csvFileToListModel(ListTableModel ltm, File csvFile) throws FileNotFoundException, IOException, Exception
+    public static Vector csvStringToDataVector(String str)
     {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "Cp1251"));
+        Vector<Vector> dataVector = new Vector<>();
+        Vector<Object> rowVector = new Vector<>(5);
 
-        if (!br.readLine().equals(ltm.getColumnName(0) + ";" + ltm.getColumnName(1) + ";"
-                + ltm.getColumnName(2) + ";" + ltm.getColumnName(3) + ";"
-                + ltm.getColumnName(4)))
+        StringBuilder sb = new StringBuilder();
+        boolean enclosed = false;
+
+        for (int i = 0; i < str.length(); i++)
         {
-            throw new Exception("Невірний заголовок відомості розрахунку продуктивності праці.");
-        }
-
-        ltm.clearTable();
-
-        String line;
-        int rowNum = 1;
-        while ((line = br.readLine()) != null)
-        {
-            Object row[] = new Object[5];
-            int currentObj = 0;
-            StringBuilder sb = new StringBuilder();
-            boolean enclosed = false;
-            for (int i = 0; i < line.length(); i++)
+            if (str.charAt(i) == lineBreak && !enclosed)
             {
-                if (line.charAt(i) == separator && !enclosed)
+                rowVector.add(sb.length() > 0 ? sb.toString() : null);
+                sb.setLength(0);
+
+                rowVector.set(0, parseInt(rowVector.get(0)));
+                rowVector.set(2, parseFloat(rowVector.get(2)));
+                rowVector.set(3, parseFloat(rowVector.get(3)));
+                rowVector.set(4, parseFloat(rowVector.get(4)));
+
+                dataVector.addElement((Vector) rowVector.clone());
+                rowVector.clear();
+            }
+            else if (str.charAt(i) == separator && !enclosed)
+            {
+                rowVector.add(sb.length() > 0 ? sb.toString() : null);
+                sb.setLength(0);
+            }
+            else
+            {
+                if (str.charAt(i) == specSymbol)
                 {
-                    row[currentObj] = sb.length() > 0 ? sb.toString() : null;
-                    sb.setLength(0);// Очищення буферу від попередньго об'єкту
-                    currentObj++;
-                }
-                else
-                {
-                    if (line.charAt(i) == specSymbol)
+                    if (str.charAt(i + 1) == specSymbol)
                     {
-                        if (line.charAt(i + 1) == specSymbol)
-                        {
-                            sb.append(specSymbol);
-                            i++;
-                        }
-                        else
-                        {
-                            enclosed = !enclosed;
-                        }
+                        sb.append(specSymbol);
+                        i++;
                     }
                     else
                     {
-                        sb.append(line.charAt(i));
+                        enclosed = !enclosed;
                     }
                 }
+                else
+                {
+                    sb.append(str.charAt(i));
+                }
             }
-            row[currentObj] = sb.length() > 0 ? sb.toString() : null;
-            
 
-            row[0] = row[0] != null ? Integer.parseInt(((String) row[0]).replaceAll("[^0-9]", "")) : rowNum;
-            
-            row[2] = parseFloat(row[2]);
-            row[3] = parseFloat(row[3]);
-            row[4] = parseFloat(row[4]);
-
-            ltm.addRow(row);
-            rowNum++;
         }
-        br.close();
+
+        return dataVector;
     }
 
     private static Float parseFloat(Object s)
     {
         return s != null ? Float.parseFloat(s.toString().replaceAll("[^0-9-+.,Ee]", "")) : null;
+    }
+
+    private static Integer parseInt(Object s)
+    {
+        return s != null ? Integer.parseInt(s.toString().replaceAll("[^0-9-+]", "")) : null;
     }
 }

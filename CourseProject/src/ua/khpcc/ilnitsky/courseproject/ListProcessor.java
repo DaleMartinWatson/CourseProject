@@ -30,7 +30,7 @@ public class ListProcessor
         {
             if (ltm.getValueAt(i, 2) != null && ltm.getValueAt(i, 3) != null)
             {
-                ltm.setValueAt(JavaAsm.asmFDiv((float) ltm.getValueAt(i, 2), JavaAsm.asmFMul((float) ltm.getValueAt(i, 3), 1000)), i, 4);//P = V / N * 100
+                ltm.setValueAt(JavaAsm.asmDiv((float) ltm.getValueAt(i, 2), JavaAsm.asmMul((float) ltm.getValueAt(i, 3), 1000)), i, 4);//P = V / N * 100
             }
         }
     }
@@ -43,15 +43,15 @@ public class ListProcessor
         {
             if (ltm.getValueAt(i, 2) != null)
             {
-                allGrossOut = JavaAsm.asmFAdd(allGrossOut, (float) ltm.getValueAt(i, 2));
+                allGrossOut = JavaAsm.asmAdd(allGrossOut, (float) ltm.getValueAt(i, 2));
             }
             if (ltm.getValueAt(i, 3) != null)
             {
-                allWorkers = JavaAsm.asmFAdd(allWorkers, (float) ltm.getValueAt(i, 3));
+                allWorkers = JavaAsm.asmAdd(allWorkers, (float) ltm.getValueAt(i, 3));
             }
             if (ltm.getValueAt(i, 4) != null)
             {
-                allProd = JavaAsm.asmFAdd(allProd, (float) ltm.getValueAt(i, 4));
+                allProd = JavaAsm.asmAdd(allProd, (float) ltm.getValueAt(i, 4));
             }
 
         }

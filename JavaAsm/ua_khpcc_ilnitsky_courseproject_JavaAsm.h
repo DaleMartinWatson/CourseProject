@@ -9,26 +9,26 @@ extern "C" {
 #endif
 /*
  * Class:     ua_khpcc_ilnitsky_courseproject_JavaAsm
- * Method:    asmFAdd
+ * Method:    asmAdd
  * Signature: (FF)F
  */
-JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFAdd
+JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmAdd
   (JNIEnv *, jclass, jfloat, jfloat);
 
 /*
  * Class:     ua_khpcc_ilnitsky_courseproject_JavaAsm
- * Method:    asmFMul
+ * Method:    asmMul
  * Signature: (FF)F
  */
-JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFMul
+JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmMul
   (JNIEnv *, jclass, jfloat, jfloat);
 
 /*
  * Class:     ua_khpcc_ilnitsky_courseproject_JavaAsm
- * Method:    asmFDiv
+ * Method:    asmDiv
  * Signature: (FF)F
  */
-JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmFDiv
+JNIEXPORT jfloat JNICALL Java_ua_khpcc_ilnitsky_courseproject_JavaAsm_asmDiv
   (JNIEnv *, jclass, jfloat, jfloat);
 
 #ifdef __cplusplus
