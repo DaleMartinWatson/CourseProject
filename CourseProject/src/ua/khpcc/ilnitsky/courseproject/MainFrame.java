@@ -18,6 +18,7 @@
  */
 package ua.khpcc.ilnitsky.courseproject;
 
+import java.awt.print.PrinterException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,11 +27,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
@@ -39,9 +43,9 @@ import javax.swing.table.TableColumnModel;
  *
  * @author Dmitry Ilnitsky
  */
-public class MainFrame extends javax.swing.JFrame
+public class MainFrame extends JFrame
 {
-    public MainFrame()
+    public MainFrame(String args[])
     {
         listTableModel = new ListTableModel();
         initComponents();
@@ -50,6 +54,12 @@ public class MainFrame extends javax.swing.JFrame
 
         aboutDialog = new AboutDialog(this, true);
         fc = new JFileChooser();
+        
+                        
+        if(args.length == 1)
+        {
+            openFile(new File(args[0]));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -595,7 +605,9 @@ public class MainFrame extends javax.swing.JFrame
 
     private void calcAllActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_calcAllActionPerformed
     {//GEN-HEADEREND:event_calcAllActionPerformed
-        setCalcAllData(ListProcessor.calcAll(listTableModel));
+        setCalcAllData(ListProcessor.calcCol(calcClass, listTableModel, 2),
+                ListProcessor.calcCol(calcClass, listTableModel, 3),
+                ListProcessor.calcCol(calcClass, listTableModel, 4));
     }//GEN-LAST:event_calcAllActionPerformed
     //Start FILE listeners
     private void newActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_newActionPerformed
@@ -616,43 +628,7 @@ public class MainFrame extends javax.swing.JFrame
             int returnVal = fc.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION)
             {
-                listFile = fc.getSelectedFile();
-                try
-                {
-                    //CsvConverter.csvFileToListModel(listTableModel, listFile);
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(listFile), charset));
-                    StringBuilder csvStringBuffer = new StringBuilder();
-
-                    if (!br.readLine().equals(
-                            listTableModel.getColumnName(0) + ";"
-                            + listTableModel.getColumnName(1) + ";"
-                            + listTableModel.getColumnName(2) + ";"
-                            + listTableModel.getColumnName(3) + ";"
-                            + listTableModel.getColumnName(4)))
-                    {
-                        throw new Exception();
-                    }
-
-                    String line;
-                    while ((line = br.readLine()) != null)
-                    {
-                        csvStringBuffer.append(line);
-                        csvStringBuffer.append("\n");
-                    }
-
-                    listTableModel.setDataVector(CsvConverter.csvStringToDataVector(csvStringBuffer.toString()));
-                    setTablePreferencess(tProdCalcList);
-                }
-                catch (Exception ex)
-                {
-                    JOptionPane.showMessageDialog(this, "Невірний формат файлу або файл пошкоджено!", "Помилка!", JOptionPane.ERROR_MESSAGE);
-
-                    listFile = null;
-                    listTableModel.clearTable();
-                    listTableModel.fillWithEmtyRows();
-                }
-
-                tProdCalcList.repaint();
+                openFile(fc.getSelectedFile());
             }
         }
     }//GEN-LAST:event_openActionPerformed
@@ -664,7 +640,17 @@ public class MainFrame extends javax.swing.JFrame
 
     private void fPrintActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fPrintActionPerformed
     {//GEN-HEADEREND:event_fPrintActionPerformed
-        System.out.println(listTableModel.toString());//debug print
+        final MessageFormat headerFormat = new MessageFormat(this.getTitle());
+        final MessageFormat footerFormat = new MessageFormat("- {0} -");
+
+        try
+        {
+            tProdCalcList.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat);
+        }
+        catch (PrinterException ex)
+        {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_fPrintActionPerformed
 
     private void fExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fExitActionPerformed
@@ -678,7 +664,7 @@ public class MainFrame extends javax.swing.JFrame
     //Start CALC listeners
     private void calcProdActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_calcProdActionPerformed
     {//GEN-HEADEREND:event_calcProdActionPerformed
-        ListProcessor.calcProd(listTableModel);
+        ListProcessor.calcProd(calcClass, listTableModel);
     }//GEN-LAST:event_calcProdActionPerformed
     //End CALC listeners
 
@@ -769,13 +755,15 @@ public class MainFrame extends javax.swing.JFrame
     }//GEN-LAST:event_rmRowActionPerformed
     //End HELP listeners
 
-    private void setCalcAllData(Object allData[])
+    private void setCalcAllData(float allGrossOut, float allWorkers, float allProd)
     {
         JTableHeader th = tCalcAllData.getTableHeader();
         TableColumnModel tcm = th.getColumnModel();
-        tcm.getColumn(2).setHeaderValue(allData[0]);
-        tcm.getColumn(3).setHeaderValue(allData[1]);
-        tcm.getColumn(4).setHeaderValue(allData[2]);
+
+        tcm.getColumn(2).setHeaderValue(allGrossOut);
+        tcm.getColumn(3).setHeaderValue(allWorkers);
+        tcm.getColumn(4).setHeaderValue(allProd);
+
         th.repaint();
     }
 
@@ -847,11 +835,56 @@ public class MainFrame extends javax.swing.JFrame
         }
         catch (IOException ex)
         {
-            JOptionPane.showMessageDialog(this, "Неможливо зберегти файл!", "Помилка!", JOptionPane.ERROR_MESSAGE);
+            showErrMsg("Неможливо зберегти файл!");
         }
     }
 
-    public static void main(String args[])
+    private void openFile(File selectedFile)
+    {
+        listFile = selectedFile;
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(listFile), charset));
+            StringBuilder csvStringBuffer = new StringBuilder();
+
+            if (!br.readLine().equals(
+                    listTableModel.getColumnName(0) + ";"
+                    + listTableModel.getColumnName(1) + ";"
+                    + listTableModel.getColumnName(2) + ";"
+                    + listTableModel.getColumnName(3) + ";"
+                    + listTableModel.getColumnName(4)))
+            {
+                throw new Exception();
+            }
+
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                csvStringBuffer.append(line);
+                csvStringBuffer.append("\n");
+            }
+
+            listTableModel.setDataVector(CsvConverter.csvStringToDataVector(csvStringBuffer.toString()));
+            setTablePreferencess(tProdCalcList);
+        }
+        catch (Exception ex)
+        {
+            showErrMsg("Невірний формат файлу або файл пошкоджено!");
+
+            listFile = null;
+            listTableModel.clearTable();
+            listTableModel.fillWithEmtyRows();
+        }
+
+        tProdCalcList.repaint();
+    }
+
+    private void showErrMsg(String msg)
+    {
+        JOptionPane.showMessageDialog(this, msg, "Помилка!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void main(final String args[])
     {
         try
         {
@@ -859,13 +892,15 @@ public class MainFrame extends javax.swing.JFrame
         }
         catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e)
         {
-            e.printStackTrace();
+            //Нічого не робимо
         }
+        
         java.awt.EventQueue.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
-                new MainFrame().setVisible(true);
+                new MainFrame(args).setVisible(true);
             }
         });
     }
@@ -923,6 +958,7 @@ public class MainFrame extends javax.swing.JFrame
     private final JFileChooser fc;
     private File listFile;
     private Vector rowBuffer;
+    private JavaAsm calcClass;
 
     private static final String charset = "Cp1251";
 

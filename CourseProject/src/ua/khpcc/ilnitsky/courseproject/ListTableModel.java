@@ -147,7 +147,7 @@ public final class ListTableModel extends DefaultTableModel
             addRow((Vector) row.clone());
         }
     }
-    
+
     public Vector getRow(int i)
     {
         return (Vector) dataVector.elementAt(i);

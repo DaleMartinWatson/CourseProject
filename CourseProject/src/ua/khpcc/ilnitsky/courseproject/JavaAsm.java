@@ -27,24 +27,16 @@ import java.io.OutputStream;
 
 public class JavaAsm
 {
-    native public static float asmAdd(float num1, float num2);
-    native public static float asmMul(float num1, float num2);
-    native public static float asmDiv(float dvd, float dvs);
+    native public float asmAdd(float num1, float num2);
+    native public float asmMul(float num1, float num2);
+    native public float asmDiv(float dvd, float dvs);
 
-    static
+    public void JavaAsm() throws Exception
     {
-        try
-        {
-            JavaAsm.loadFromJar(getLibNameByOs("JavaAsm"));
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            System.exit(1);
-        }
+            loadFromJar(getLibNameByOs("JavaAsm"));
     }
 
-    private static String getLibNameByOs(String libName) throws Exception
+    private String getLibNameByOs(String libName) throws Exception
     {
         String osName = System.getProperty("os.name").toLowerCase();
         String vmDataModel = System.getProperty("sun.arch.data.model");
@@ -70,7 +62,7 @@ public class JavaAsm
         throw new Exception("Програма не може працювати з данною операційною системою!");
     }
 
-    public static void loadFromJar(String libName) throws IOException
+    public void loadFromJar(String libName) throws IOException
     {
         File temp = File.createTempFile("lib", "-" + libName);
         temp.deleteOnExit();
@@ -98,9 +90,7 @@ public class JavaAsm
             os.close();
             is.close();
         }
-               
-        System.out.println(libName);
-        System.out.println(temp.getAbsolutePath());
+        
         System.load(temp.getAbsolutePath());
     }
 }
