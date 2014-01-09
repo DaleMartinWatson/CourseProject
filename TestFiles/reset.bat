@@ -1,2 +1,2 @@
-del prodList.csv
-copy backUpProdList.csv prodList.csv
+del prodList.plt.csv
+copy backUpProdList.plt.csv prodList.plt.csv

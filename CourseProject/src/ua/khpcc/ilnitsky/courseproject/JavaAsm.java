@@ -25,15 +25,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class JavaAsm
+public final class JavaAsm
 {
     native public float asmAdd(float num1, float num2);
+
     native public float asmMul(float num1, float num2);
+
     native public float asmDiv(float dvd, float dvs);
 
-    public void JavaAsm() throws Exception
+    public JavaAsm() throws Exception
     {
-            loadFromJar(getLibNameByOs("JavaAsm"));
+        loadFromJar(getLibNameByOs("JavaAsm"));
     }
 
     private String getLibNameByOs(String libName) throws Exception
@@ -62,7 +64,7 @@ public class JavaAsm
         throw new Exception("Програма не може працювати з данною операційною системою!");
     }
 
-    public void loadFromJar(String libName) throws IOException
+    public void loadFromJar(String libName) throws IOException, Exception
     {
         File temp = File.createTempFile("lib", "-" + libName);
         temp.deleteOnExit();
@@ -71,26 +73,33 @@ public class JavaAsm
         {
             throw new FileNotFoundException("Неможливо створити тимчасовий файл: " + temp.getAbsolutePath() + " .");
         }
-        
+
         InputStream is = JavaAsm.class.getResourceAsStream("/lib/" + libName);
-        OutputStream os = new FileOutputStream(temp);
-        
-        
-        byte[] buffer = new byte[1024];
-        int readBytes;
-        try
+
+        if (is != null)
         {
-            while ((readBytes = is.read(buffer)) != -1)
+            OutputStream os = new FileOutputStream(temp);
+
+            byte[] buffer = new byte[1024];
+            int readBytes;
+            try
             {
-                os.write(buffer, 0, readBytes);
+                while ((readBytes = is.read(buffer)) != -1)
+                {
+                    os.write(buffer, 0, readBytes);
+                }
             }
+            finally
+            {
+                os.close();
+                is.close();
+            }
+
+            System.load(temp.getAbsolutePath());
         }
-        finally
+        else
         {
-            os.close();
-            is.close();
+            throw new Exception("Бібліотеку " + libName + " не знайдено.");
         }
-        
-        System.load(temp.getAbsolutePath());
     }
 }

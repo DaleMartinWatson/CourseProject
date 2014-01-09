@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
@@ -47,6 +48,16 @@ public class MainFrame extends JFrame
 {
     public MainFrame(String args[])
     {
+        try
+        {
+            calcClass = new JavaAsm();
+        }
+        catch (Exception e)
+        {
+            showErrMsg(e.getMessage());
+            System.exit(1);
+        }
+
         listTableModel = new ListTableModel();
         initComponents();
         setTablePreferencess(tProdCalcList);
@@ -54,9 +65,11 @@ public class MainFrame extends JFrame
 
         aboutDialog = new AboutDialog(this, true);
         fc = new JFileChooser();
-        
-                        
-        if(args.length == 1)
+
+        fc.addChoosableFileFilter(new CsvFilter(".csv", "CSV таблиці"));
+        fc.addChoosableFileFilter(new CsvFilter(".plt.csv", "Таблиці розрахунків"));
+
+        if (args.length == 1)
         {
             openFile(new File(args[0]));
         }
@@ -141,7 +154,19 @@ public class MainFrame extends JFrame
             {
                 "", "Разом по галузі:", "0.0", "0.0", "0.0"
             }
-        ));
+        )
+        {
+            Class[] types = new Class []
+            {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex)
+            {
+                return types [columnIndex];
+            }
+        });
+        tCalcAllData.setRowSelectionAllowed(false);
         spCalcAllData.setViewportView(tCalcAllData);
 
         fileToolBar.setRollover(true);
@@ -777,6 +802,11 @@ public class MainFrame extends JFrame
         jTable.getColumnModel().getColumn(3).setPreferredWidth(160);
         jTable.getColumnModel().getColumn(4).setPreferredWidth(155);
 
+        jTable.getColumnModel().getColumn(0).setMaxWidth(40);
+        jTable.getColumnModel().getColumn(2).setMaxWidth(140);
+        jTable.getColumnModel().getColumn(3).setMaxWidth(160);
+        jTable.getColumnModel().getColumn(4).setMaxWidth(155);
+
         jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable.putClientProperty("terminateEditOnFocusLost", true);
     }
@@ -800,15 +830,7 @@ public class MainFrame extends JFrame
         {
             saveFile(false);
         }
-
-        if (result == 2 || result == -1)//Якщо натиснуто "Скасувати"
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return result != 2 && result != -1;
     }
 
     private void saveFile(boolean saveas)
@@ -828,10 +850,11 @@ public class MainFrame extends JFrame
             {
                 listFile.createNewFile();
             }
-
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listFile), charset));
-            bw.write(CsvConverter.listModelToCsvString(listTableModel));
-            bw.close();
+            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listFile), charset)))
+            {
+                bw.write(CsvConverter.listModelToCsvString(listTableModel));
+                bw.close();
+            }
         }
         catch (IOException ex)
         {
@@ -894,7 +917,7 @@ public class MainFrame extends JFrame
         {
             //Нічого не робимо
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable()
         {
             @Override
@@ -961,5 +984,36 @@ public class MainFrame extends JFrame
     private JavaAsm calcClass;
 
     private static final String charset = "Cp1251";
+
+    public class CsvFilter extends FileFilter
+    {
+        private final String ext, descr;
+
+        private CsvFilter(String ext, String descr)
+        {
+            this.ext = ext;
+            this.descr = descr;
+        }
+        
+
+        @Override
+        public boolean accept(File f)
+        {
+            if (f.isDirectory())
+            {
+                return true;
+            }
+            else
+            {
+                return f.getName().endsWith(ext);
+            }
+        }
+
+        @Override
+        public String getDescription()
+        {
+            return descr;
+        }
+    }
 
 }
