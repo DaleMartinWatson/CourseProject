@@ -57,13 +57,14 @@ public class AboutDialog extends javax.swing.JDialog
     {
 
         bClose = new javax.swing.JButton();
-        textScrollPane = new javax.swing.JScrollPane();
-        tpAboutText = new javax.swing.JTextPane();
+        spDescription = new javax.swing.JScrollPane();
+        taDescription = new javax.swing.JTextArea();
+        lImage = new javax.swing.JLabel();
 
         setTitle("Про програму");
         setIconImage(null);
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(375, 300));
+        setPreferredSize(null);
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
         addWindowListener(new java.awt.event.WindowAdapter()
@@ -84,31 +85,46 @@ public class AboutDialog extends javax.swing.JDialog
             }
         });
 
-        tpAboutText.setEditable(false);
-        tpAboutText.setText("Курсовий проект з предмету \"Системне програмування\"\nТема: \"Відомість розрахунку продуктивності праці\"\nРозробив: студент групи Е-05 Ільницький Дмитро\nПеревірив: викладач Жадченко Ірина Юріївна");
-        textScrollPane.setViewportView(tpAboutText);
+        taDescription.setEditable(false);
+        taDescription.setColumns(20);
+        taDescription.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        taDescription.setRows(5);
+        taDescription.setText("Курсовий проект з предмету \"Системне програмування\"\nТема: \"Відомість розрахунку продуктивності праці\"\nРозробив: студент групи Е-05 Ільницький Дмитро\nПеревірив: викладач Жадченко Ірина Юріївна");
+        spDescription.setViewportView(taDescription);
+
+        lImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/triforce.png"))); // NOI18N
+        lImage.setToolTipText("Newfags can`t triforce!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bClose)
-                .addGap(150, 150, 150))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(textScrollPane)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(spDescription))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(140, 140, 140)
+                                .addComponent(bClose))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(lImage)))
+                        .addGap(0, 23, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(textScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addComponent(spDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(lImage, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bClose)
-                .addContainerGap())
+                .addGap(7, 7, 7))
         );
 
         getRootPane().setDefaultButton(bClose);
@@ -134,7 +150,8 @@ public class AboutDialog extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bClose;
-    private javax.swing.JScrollPane textScrollPane;
-    private javax.swing.JTextPane tpAboutText;
+    private javax.swing.JLabel lImage;
+    private javax.swing.JScrollPane spDescription;
+    private javax.swing.JTextArea taDescription;
     // End of variables declaration//GEN-END:variables
 }

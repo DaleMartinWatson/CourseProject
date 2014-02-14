@@ -19,6 +19,7 @@
 package ua.khpcc.ilnitsky.courseproject;
 
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -668,13 +669,19 @@ public class MainFrame extends JFrame
         final MessageFormat headerFormat = new MessageFormat(this.getTitle());
         final MessageFormat footerFormat = new MessageFormat("- {0} -");
 
-        try
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintable(tProdCalcList.getPrintable(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat));
+
+        if (job.printDialog())
         {
-            tProdCalcList.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat);
-        }
-        catch (PrinterException ex)
-        {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            try
+            {
+                job.print();
+            }
+            catch (PrinterException ex)
+            {
+                showErrMsg("Неможливо роздрукувати таблицю!");
+            }
         }
     }//GEN-LAST:event_fPrintActionPerformed
 
@@ -994,7 +1001,6 @@ public class MainFrame extends JFrame
             this.ext = ext;
             this.descr = descr;
         }
-        
 
         @Override
         public boolean accept(File f)
